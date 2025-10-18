@@ -20,11 +20,11 @@ export default function Model() {
 
     let endpoint = "";
     if (modelName === "Diabetes")
-      endpoint = `${baseURL}/predict/diabetes`;
+      endpoint = "https://eva2-backend.onrender.com/predict/diabetes";
     else if (modelName === "Insurance LR")
-      endpoint = `${baseURL}/predict/insurance/lr`;
+      endpoint = "https://eva2-backend.onrender.com/predict/insurance/lr";
     else
-      endpoint = `${baseURL}/predict/insurance/rf`;
+      endpoint = "https://eva2-backend.onrender.com/predict/insurance/rf";
 
     try {
       const response = await fetch(endpoint, {
