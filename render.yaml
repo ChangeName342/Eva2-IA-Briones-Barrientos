@@ -6,3 +6,4 @@ services:
     buildCommand: pip install -r backend/requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
     workingDirectory: backend
+    pythonVersion: 3.11.9
