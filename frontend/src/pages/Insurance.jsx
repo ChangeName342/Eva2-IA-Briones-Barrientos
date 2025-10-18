@@ -26,15 +26,12 @@ export default function Insurance() {
     setResult(null);
     setLoading(true);
 
-    const sexNum = formData.sex === "male" ? 1 : 0;
+    const sexNum = formData.sex === "male" ? 0 : 1;
     const smokerNum = formData.smoker === "yes" ? 1 : 0;
     const regionMap = {
-      northwest: 1,
-      northeast: 2,
-      southwest: 3,
-      southeast: 4,
+      southwest: 0, southeast: 1, northwest: 2, northeast: 3 
     };
-    const regionNum = regionMap[formData.region] || 1;
+    const regionNum = regionMap[formData.region] || 2;
 
     console.log("Datos enviados al backend:", {
       age: Number(formData.age),
@@ -47,7 +44,7 @@ export default function Insurance() {
 
     try {
       const response = await axios.post(
-        "https://eva2-backend.onrender.com/insurance",
+        "https://eva2-backend.onrender.com/predict/insurance/lr",
         {
           age: Number(formData.age),
           sex: sexNum,
