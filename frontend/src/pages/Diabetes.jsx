@@ -27,7 +27,7 @@ export default function Diabetes() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/predict/diabetes",
+        "https://eva2-frontend.onrender.com/diabetes",
         {
           Pregnancies: Number(formData.Pregnancies),
           Glucose: Number(formData.Glucose),

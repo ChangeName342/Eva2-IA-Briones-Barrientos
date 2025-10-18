@@ -47,7 +47,7 @@ export default function Insurance() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/predict/insurance/lr",
+        "https://eva2-frontend.onrender.com/insurance",
         {
           age: Number(formData.age),
           sex: sexNum,
