@@ -7,6 +7,12 @@ import os
 router = APIRouter()
 
 # -------------------
+# Directorio base y carpeta de datos
+# -------------------
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
+# -------------------
 # Función segura para cargar pickle
 # -------------------
 def load_pickle(path, name):
@@ -25,71 +31,83 @@ def load_pickle(path, name):
 # Cargar modelos
 # -------------------
 print("Ruta actual:", os.getcwd())
-diabetes_model = load_pickle("data/diabetes_model.pkl", "Diabetes Model")
-diabetes_scaler = load_pickle("data/diabetes_scaler.pkl", "Diabetes Scaler")
-insurance_model_lr = load_pickle("data/insurance_model_lr.pkl", "Insurance LR Model")
-insurance_model_rf = load_pickle("data/insurance_model_rf.pkl", "Insurance RF Model")
+diabetes_model_lr = load_pickle(os.path.join(DATA_DIR, "diabetes_model_lr.pkl"), "Diabetes Logistic Regression Model")
+diabetes_model_rf = load_pickle(os.path.join(DATA_DIR, "diabetes_model_rf.pkl"), "Diabetes Random Forest Model")
+diabetes_scaler = load_pickle(os.path.join(DATA_DIR, "diabetes_scaler.pkl"), "Diabetes Scaler")
+
+insurance_model_lr = load_pickle(os.path.join(DATA_DIR, "insurance_model_lr.pkl"), "Insurance Linear Regression Model")
+insurance_model_rf = load_pickle(os.path.join(DATA_DIR, "insurance_model_rf.pkl"), "Insurance RF Model")
 
 # -------------------
 # Schema Diabetes
 # -------------------
 class DiabetesInput(BaseModel):
-    Pregnancies: int = Field(..., ge=0, le=20, description="Número de embarazos (0-20)")
-    Glucose: float = Field(..., ge=50, le=250, description="Nivel de glucosa (50-250 mg/dL)")
-    BloodPressure: float = Field(..., ge=40, le=120, description="Presión arterial (40-120 mmHg)")
-    SkinThickness: float = Field(..., ge=0, le=100, description="Grosor de piel (0-100 mm)")
-    Insulin: float = Field(..., ge=0, le=900, description="Nivel de insulina (0-900 muU/mL)")
-    BMI: float = Field(..., ge=10, le=70, description="Índice de masa corporal (10-70)")
-    DiabetesPedigreeFunction: float = Field(..., ge=0, le=3, description="Función de pedigree diabético (0-3)")
-    Age: int = Field(..., ge=10, le=100, description="Edad del paciente (10-100 años)")
+    Pregnancies: int = Field(..., ge=0, le=20)
+    Glucose: float = Field(..., ge=50, le=250)
+    BloodPressure: float = Field(..., ge=40, le=120)
+    SkinThickness: float = Field(..., ge=0, le=100)
+    Insulin: float = Field(..., ge=0, le=900)
+    BMI: float = Field(..., ge=10, le=70)
+    DiabetesPedigreeFunction: float = Field(..., ge=0, le=3)
+    Age: int = Field(..., ge=10, le=100)
 
 # -------------------
-# Schema Seguro Médico
+# Schema Insurance
 # -------------------
 class InsuranceInput(BaseModel):
-    age: int = Field(..., ge=1, le=120, description="Edad (1-120)")
-    sex: int = Field(..., ge=0, le=1, description="Sexo (0=femenino, 1=masculino)")
-    bmi: float = Field(..., ge=10, le=70, description="BMI (10-70)")
-    children: int = Field(..., ge=0, le=10, description="Número de hijos (0-10)")
-    smoker: int = Field(..., ge=0, le=1, description="Fumador (0=no, 1=sí)")
-    region: int = Field(..., ge=1, le=4, description="Región (1=NW, 2=NE, 3=SW, 4=SE)")
+    age: int = Field(..., ge=1, le=120)
+    sex: int = Field(..., ge=0, le=1)
+    bmi: float = Field(..., ge=10, le=70)
+    children: int = Field(..., ge=0, le=10)
+    smoker: int = Field(..., ge=0, le=1)
+    region: int = Field(..., ge=0, le=3)
 
 # -------------------
-# Endpoints Diabetes
+# Endpoint Diabetes (ambos modelos)
 # -------------------
 @router.post("/predict/diabetes")
 def predict_diabetes(data: DiabetesInput):
-    if diabetes_model is None or diabetes_scaler is None:
-        return {"error": "Modelo de diabetes no disponible."}
+    if diabetes_model_lr is None or diabetes_model_rf is None or diabetes_scaler is None:
+        return {"error": "Modelos de diabetes no disponibles."}
 
-    x = np.array([[data.Pregnancies, data.Glucose, data.BloodPressure, 
-                   data.SkinThickness, data.Insulin, data.BMI, 
+    x = np.array([[data.Pregnancies, data.Glucose, data.BloodPressure,
+                   data.SkinThickness, data.Insulin, data.BMI,
                    data.DiabetesPedigreeFunction, data.Age]])
     x_scaled = diabetes_scaler.transform(x)
-    pred = diabetes_model.predict(x_scaled)
-    prob = diabetes_model.predict_proba(x_scaled)[0][1]
-    return {"prediction": int(pred[0]), "probability": float(prob)}
+
+    # Logistic Regression
+    pred_lr = diabetes_model_lr.predict(x_scaled)[0]
+    prob_lr = diabetes_model_lr.predict_proba(x_scaled)[0][1]
+
+    # Random Forest
+    pred_rf = diabetes_model_rf.predict(x_scaled)[0]
+    prob_rf = diabetes_model_rf.predict_proba(x_scaled)[0][1]
+
+    return {
+        "logistic_regression": {"prediction": int(pred_lr), "probability": float(prob_lr)},
+        "random_forest": {"prediction": int(pred_rf), "probability": float(prob_rf)}
+    }
 
 # -------------------
-# Endpoints Seguro Médico
+# Endpoint Insurance (ambos modelos)
 # -------------------
-@router.post("/predict/insurance/lr")
-def predict_insurance_lr(data: InsuranceInput):
-    if insurance_model_lr is None:
-        return {"error": "Modelo de seguro LR no disponible."}
+@router.post("/predict/insurance")
+def predict_insurance(data: InsuranceInput):
+    if insurance_model_lr is None or insurance_model_rf is None:
+        return {"error": "Modelos de seguro no disponibles."}
 
     x = np.array([[data.age, data.sex, data.bmi, data.children, data.smoker, data.region]])
-    pred = insurance_model_lr.predict(x)
-    return {"prediction": float(pred[0])}
 
-@router.post("/predict/insurance/rf")
-def predict_insurance_rf(data: InsuranceInput):
-    if insurance_model_rf is None:
-        return {"error": "Modelo de seguro RF no disponible."}
+    pred_lr = insurance_model_lr.predict(x)[0]
+    pred_rf = insurance_model_rf.predict(x)[0]
 
-    x = np.array([[data.age, data.sex, data.bmi, data.children, data.smoker, data.region]])
-    pred = insurance_model_rf.predict(x)
-    return {"prediction": float(pred[0])}
+    return {
+        "linear_regression": {"prediction": float(pred_lr)},
+        "random_forest": {"prediction": float(pred_rf)}
+    }
+
+
+
 
 
 

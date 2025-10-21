@@ -16,15 +16,15 @@ export default function Model() {
     e.preventDefault();
 
     // 🔥 Cambia esta URL por la que Render te dé para el backend
-    const baseURL = "https://eva2-backend.onrender.com";
+    const baseURL = "http://127.0.0.1:8000";
 
     let endpoint = "";
     if (modelName === "Diabetes")
-      endpoint = "https://eva2-backend.onrender.com/predict/diabetes";
+      endpoint = "${baseURL}/predict/diabetes";
     else if (modelName === "Insurance LR")
-      endpoint = "https://eva2-backend.onrender.com/predict/insurance/lr";
+      endpoint = "${baseURL}/predict/insurance/lr";
     else
-      endpoint = "https://eva2-backend.onrender.com/predict/insurance/rf";
+      endpoint = "${baseURL}/predict/insurance/rf";
 
     try {
       const response = await fetch(endpoint, {

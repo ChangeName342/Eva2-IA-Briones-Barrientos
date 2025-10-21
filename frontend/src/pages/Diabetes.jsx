@@ -27,7 +27,7 @@ export default function Diabetes() {
 
     try {
       const response = await axios.post(
-        "https://eva2-backend.onrender.com/predict/diabetes",
+        "http://127.0.0.1:8000/predict/diabetes",
         {
           Pregnancies: Number(formData.Pregnancies),
           Glucose: Number(formData.Glucose),
@@ -45,6 +45,18 @@ export default function Diabetes() {
       setResult({ error: "Error al predecir. Revisa los datos ingresados." });
     }
   };
+
+  const renderPrediction = (title, data) => (
+    <div className="mt-4 p-4 bg-pink-100 border border-pink-200 rounded-xl shadow-md text-center">
+      <h3 className="text-pink-700 font-bold mb-1">{title}</h3>
+      <p className="text-pink-700 font-semibold">
+        Predicción: {data.prediction === 1 ? "Diabético" : "No Diabético"}
+      </p>
+      <p className="text-pink-700">
+        Probabilidad: {(data.probability * 100).toFixed(2)}%
+      </p>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-pink-50 to-pink-100 flex flex-col items-center justify-start p-8">
@@ -105,11 +117,11 @@ export default function Diabetes() {
             value={formData.BloodPressure}
             onChange={handleChange}
             min="40"
-            max="140"
+            max="120"
             required
             className="border border-pink-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
           />
-          <small className="text-gray-500">Tipo: número | Mín: 40, Máx: 140</small>
+          <small className="text-gray-500">Tipo: número | Mín: 40, Máx: 120</small>
         </div>
 
         {/* SkinThickness */}
@@ -170,12 +182,12 @@ export default function Diabetes() {
             value={formData.DiabetesPedigreeFunction}
             onChange={handleChange}
             min="0"
-            max="2.5"
+            max="3"
             step="0.01"
             required
             className="border border-pink-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
           />
-          <small className="text-gray-500">Tipo: decimal | Mín: 0, Máx: 2.5</small>
+          <small className="text-gray-500">Tipo: decimal | Mín: 0, Máx: 3</small>
         </div>
 
         {/* Age */}
@@ -187,11 +199,11 @@ export default function Diabetes() {
             value={formData.Age}
             onChange={handleChange}
             min="1"
-            max="120"
+            max="100"
             required
             className="border border-pink-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
           />
-          <small className="text-gray-500">Tipo: entero | Mín: 1, Máx: 120</small>
+          <small className="text-gray-500">Tipo: entero | Mín: 1, Máx: 100</small>
         </div>
 
         {/* Buttons */}
@@ -214,14 +226,18 @@ export default function Diabetes() {
 
       {/* Result */}
       {result && (
-        <div className="mt-6 p-6 bg-pink-50 border border-pink-200 rounded-xl shadow-md text-center w-full max-w-3xl">
+        <div className="mt-6 w-full max-w-3xl flex flex-col sm:flex-row gap-4">
           {result.error ? (
-            <p className="text-red-500 font-semibold">{result.error}</p>
+            <p className="text-red-500 font-semibold text-center">{result.error}</p>
           ) : (
-            <p className="text-pink-700 font-bold text-xl">
-              Predicción: {result.prediction === 1 ? "Diabético" : "No Diabético"}<br/>
-              Probabilidad: {(result.probability * 100).toFixed(2)}%
-            </p>
+            <>
+              <div className="flex-1">
+                {renderPrediction("Regresión Logística", result.logistic_regression)}
+              </div>
+              <div className="flex-1">
+                {renderPrediction("Random Forest", result.random_forest)}
+              </div>
+            </>
           )}
         </div>
       )}

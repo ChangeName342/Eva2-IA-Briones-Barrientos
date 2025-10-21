@@ -28,23 +28,12 @@ export default function Insurance() {
 
     const sexNum = formData.sex === "male" ? 0 : 1;
     const smokerNum = formData.smoker === "yes" ? 1 : 0;
-    const regionMap = {
-      southwest: 0, southeast: 1, northwest: 2, northeast: 3 
-    };
+    const regionMap = { southwest: 0, southeast: 1, northwest: 2, northeast: 3 };
     const regionNum = regionMap[formData.region] || 2;
-
-    console.log("Datos enviados al backend:", {
-      age: Number(formData.age),
-      sex: sexNum,
-      bmi: Number(formData.bmi),
-      children: Number(formData.children),
-      smoker: smokerNum,
-      region: regionNum,
-    });
 
     try {
       const response = await axios.post(
-        "https://eva2-backend.onrender.com/predict/insurance/lr",
+        "http://127.0.0.1:8000/predict/insurance",
         {
           age: Number(formData.age),
           sex: sexNum,
@@ -54,7 +43,6 @@ export default function Insurance() {
           region: regionNum,
         }
       );
-      console.log("Respuesta del backend:", response.data);
       setResult(response.data);
     } catch (error) {
       console.error(
@@ -66,6 +54,15 @@ export default function Insurance() {
       setLoading(false);
     }
   };
+
+  const renderPrediction = (title, value) => (
+    <div className="mt-4 p-4 bg-blue-100 border border-blue-200 rounded-xl shadow-md text-center flex-1">
+      <h3 className="text-blue-700 font-bold mb-1">{title}</h3>
+      <p className="text-blue-700 font-semibold">
+        Predicción: ${value.toFixed(2)}
+      </p>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 flex flex-col items-center justify-start p-8">
@@ -79,108 +76,57 @@ export default function Insurance() {
         </p>
       </div>
 
-      {/* Form */}
+      {/* Formulario */}
       <form
         className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6"
         onSubmit={handleSubmit}
       >
-        {/* Edad */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium text-blue-700">Edad</label>
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            min="1"
-            max="120"
-            required
-            className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <small className="text-gray-500">Tipo: número | Mín: 1, Máx: 120</small>
-        </div>
-
-        {/* Sexo */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium text-blue-700">Sexo</label>
-          <select
-            name="sex"
-            value={formData.sex}
-            onChange={handleChange}
-            className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="male">Masculino</option>
-            <option value="female">Femenino</option>
-          </select>
-          <small className="text-gray-500">Tipo: opción (Masculino/Femenino)</small>
-        </div>
-
-        {/* BMI */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium text-blue-700">BMI</label>
-          <input
-            type="number"
-            name="bmi"
-            value={formData.bmi}
-            onChange={handleChange}
-            min="10"
-            max="70"
-            step="0.1"
-            required
-            className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <small className="text-gray-500">Tipo: número decimal | Mín: 10, Máx: 70</small>
-        </div>
-
-        {/* Número de hijos */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium text-blue-700">Número de Hijos</label>
-          <input
-            type="number"
-            name="children"
-            value={formData.children}
-            onChange={handleChange}
-            min="0"
-            max="10"
-            required
-            className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <small className="text-gray-500">Tipo: número entero | Mín: 0, Máx: 10</small>
-        </div>
-
-        {/* Fumador */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium text-blue-700">Fumador</label>
-          <select
-            name="smoker"
-            value={formData.smoker}
-            onChange={handleChange}
-            className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="no">No</option>
-            <option value="yes">Sí</option>
-          </select>
-          <small className="text-gray-500">Tipo: opción (Sí/No)</small>
-        </div>
-
-        {/* Región */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium text-blue-700">Región</label>
-          <select
-            name="region"
-            value={formData.region}
-            onChange={handleChange}
-            className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="northwest">Northwest</option>
-            <option value="northeast">Northeast</option>
-            <option value="southwest">Southwest</option>
-            <option value="southeast">Southeast</option>
-          </select>
-          <small className="text-gray-500">
-            Tipo: opción | Northwest, Northeast, Southwest, Southeast
-          </small>
-        </div>
+        {/* Campos del formulario */}
+        {[
+          { label: "Edad", name: "age", type: "number", min: 1, max: 120 },
+          { label: "Sexo", name: "sex", type: "select", options: ["Masculino", "Femenino"] },
+          { label: "BMI", name: "bmi", type: "number", min: 10, max: 70, step: 0.1 },
+          { label: "Número de Hijos", name: "children", type: "number", min: 0, max: 10 },
+          { label: "Fumador", name: "smoker", type: "select", options: ["No", "Si"] },
+          { label: "Región", name: "region", type: "select", options: ["northwest", "northeast", "southwest", "southeast"] },
+        ].map((field) => (
+          <div className="flex flex-col" key={field.name}>
+            <label className="mb-1 font-medium text-blue-700">{field.label}</label>
+            {field.type === "select" ? (
+              <select
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                {field.options.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="number"
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                min={field.min}
+                max={field.max}
+                step={field.step || 1}
+                required
+                className="border border-blue-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            )}
+            <small className="text-gray-500">
+              {field.type === "number"
+                ? field.step && field.step < 1
+                  ? `Tipo: decimal | Mín: ${field.min}, Máx: ${field.max}`
+                  : `Tipo: entero | Mín: ${field.min}, Máx: ${field.max}`
+                : `Tipo: opción`}
+            </small>
+          </div>
+        ))}
 
         {/* Botones */}
         <div className="col-span-full flex justify-between items-center mt-4">
@@ -203,21 +149,23 @@ export default function Insurance() {
         </div>
       </form>
 
-      {/* Resultado */}
+      {/* Resultados */}
       {result && (
-        <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-xl shadow-md text-center w-full max-w-3xl">
+        <div className="mt-6 w-full max-w-3xl flex flex-col sm:flex-row gap-4">
           {result.error ? (
-            <p className="text-red-500 font-semibold">{result.error}</p>
+            <p className="text-red-500 font-semibold text-center">{result.error}</p>
           ) : (
-            <p className="text-blue-700 font-bold text-xl">
-              Predicción: ${result.prediction.toFixed(2)}
-            </p>
+            <>
+              {renderPrediction("Regresión Lineal", result.linear_regression.prediction)}
+              {renderPrediction("Random Forest", result.random_forest.prediction)}
+            </>
           )}
         </div>
       )}
     </div>
   );
 }
+
 
 
 
