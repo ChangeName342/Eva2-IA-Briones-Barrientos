@@ -49,7 +49,7 @@ class DiabetesInput(BaseModel):
     Insulin: float = Field(..., ge=0, le=900)
     BMI: float = Field(..., ge=10, le=70)
     DiabetesPedigreeFunction: float = Field(..., ge=0, le=3)
-    Age: int = Field(..., ge=10, le=100)
+    Age: int = Field(..., ge=1, le=100)
 
 # -------------------
 # Schema Insurance

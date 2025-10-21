@@ -7,9 +7,6 @@ app = FastAPI()
 # Permitir solicitudes desde el frontend
 origins = [
     "https://eva2-frontend.onrender.com",
-    "http://localhost:5173",  # puerto por defecto de Vite
-    "http://127.0.0.1:5173"
-
 ]
 
 app.add_middleware(
