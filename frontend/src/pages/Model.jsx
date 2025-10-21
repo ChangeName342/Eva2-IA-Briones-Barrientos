@@ -15,8 +15,7 @@ export default function Model() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔥 Cambia esta URL por la que Render te dé para el backend
-    const baseURL = "http://127.0.0.1:8000";
+    const baseURL = "https://eva2-backend.onrender.com";
 
     let endpoint = "";
     if (modelName === "Diabetes")
