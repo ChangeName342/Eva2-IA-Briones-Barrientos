@@ -1,7 +1,10 @@
 Integrantes: Ignacio Barrientos y Jose Briones
+
 Asignatura: Aplicaciones de Inteligencia Artificial (TI2082/D-IEI-N8-P1-C2/D Valdivia IEI)
+
 Profesor: Vedran Hrvoj Tomicic Cantizano
-Link: 
+
+Link: https://eva2-frontend.onrender.com/
 
 **Estructura:**
 
