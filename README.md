@@ -114,16 +114,11 @@ R: El modelo de Regresión Logística (para diabetes) y el de Regresión Lineal 
 
 Modelo 1 – Predicción de Diabetes
 
-En el conjunto de datos de diabetes (PIMA Indians), el RandomForest muestra que las variables con mayor peso predictivo son:
+En el modelo de predicción de diabetes, el RandomForest mostró que las variables más influyentes en la predicción de la enfermedad son la glucosa y el BMI (Índice de masa corporal). La glucosa tiene la mayor importancia, con un impacto cercano al 30-35%. Esto tiene sentido clínicamente, ya que niveles altos de glucosa en sangre son uno de los indicadores más claros de diabetes tipo 2. El BMI, con una importancia de alrededor del 20%, también es clave en la predicción, ya que un mayor índice de masa corporal está estrechamente asociado con un mayor riesgo de desarrollar diabetes.
 
-Característica	Importancia estimada	Interpretación
-Glucosa	Alta (≈ 30–35%)	Es el factor más determinante. Niveles altos de glucosa se asocian directamente a la presencia de diabetes.
-BMI (Índice de masa corporal)	Alta (≈ 20%)	Un mayor BMI indica sobrepeso u obesidad, lo que aumenta el riesgo de diabetes tipo 2.
-Edad	Media-alta (≈ 15%)	La probabilidad de desarrollar diabetes aumenta con la edad.
-Insulina	Media (≈ 10–12%)	Relacionada con la resistencia insulínica, aunque puede tener valores más dispersos.
-Presión Arterial / Embarazos / Grosor de piel / Pedigree	Baja (≤ 10%)	Factores complementarios o de contexto, con menor peso individual.
+La edad es otro factor significativo, con un impacto del 15%, ya que la probabilidad de desarrollar diabetes aumenta a medida que una persona envejece. En cambio, variables como insulina, presión arterial, grosor de piel y diabetes pedigree function tienen un peso mucho menor, siendo consideradas más como factores complementarios.
 
-Interpretación práctica: Si un usuario en la web ingresa valores altos en glucosa o BMI, el modelo de diabetes arroja una probabilidad alta de diagnóstico positivo. Esto coincide con lo esperado clínicamente y refuerza la coherencia del modelo.
+Cuando un usuario ingresa sus datos en la interfaz web, si los valores de glucosa o BMI son elevados, el modelo de predicción de diabetes generalmente indica una alta probabilidad de que el usuario padezca la enfermedad. Este comportamiento es coherente con lo que se espera en un diagnóstico real, donde altos niveles de glucosa y sobrepeso son factores de riesgo clave.
 
 EJEMPLO: 
 BMI BAJO
@@ -136,16 +131,9 @@ BMI ALTO
 
 Modelo 2 – Predicción de Seguro Médico
 
-En el modelo de regresión lineal para costos de seguro, el RandomForest también permite medir la influencia de cada variable:
+Por otro lado, el modelo de predicción de costos de seguro médico, basado en una regresión lineal, fue evaluado también con RandomForest para comprender qué factores afectan más el precio del seguro. En este caso, la variable más influyente es si la persona fuma o no. Los fumadores tienen un riesgo mucho mayor de desarrollar enfermedades, lo que eleva significativamente sus costos de seguro. El edad de la persona también tiene un impacto notable, ya que a medida que las personas envejecen, los costos del seguro aumentan debido a los riesgos asociados con la salud.
 
-Característica	Importancia estimada	Interpretación
-Fumador (Smoker)	Muy alta (≈ 50%)	El hábito de fumar es el principal factor que eleva los costos. Los fumadores pueden pagar hasta 3–4 veces más.
-Edad	Alta (≈ 25%)	A mayor edad, mayor riesgo y mayor costo de seguro.
-BMI	Media-alta (≈ 15%)	Un índice de masa corporal alto implica más riesgos de enfermedades relacionadas.
-Número de hijos	Baja (≈ 5%)	Incrementa el costo de manera leve, por dependientes adicionales.
-Sexo y Región	Muy baja (≤ 3%)	No generan diferencias significativas en el precio.
-
-Interpretación práctica: Al probar en la interfaz de la web, cambiar el valor “Fumador: Sí” genera el aumento más notorio, lo que confirma el peso real de esta variable según el modelo RandomForest.
+El BMI (Índice de masa corporal) también es un factor importante, aunque su impacto es menor comparado con el de fumar o la edad. Las variables como el número de hijos, el sexo y la región tienen un impacto menor en el costo del seguro. En este caso, cambiar el estado de “fumador: sí” en la interfaz de la web genera el mayor aumento en el costo del seguro, lo que confirma la gran influencia de esta variable en el modelo.
 
 EJEMPLO:
 NO FUMA
@@ -156,22 +144,9 @@ SI FUMA
 
 
 Comparación general entre ambos modelos
-Aspecto	Modelo de Diabetes	Modelo de Seguro Médico
-Tipo de modelo	Clasificación (0 o 1)	Regresión continua ($)
-Variable principal	Glucosa	Fumador
-Factores secundarios	BMI, Edad, Insulina	Edad, BMI
-Variables con menor impacto	Pedigree, Grosor de piel	Sexo, Región
-Sensibilidad al cambio	Alta (cambia el resultado de clase)	Proporcional (aumenta o disminuye el precio)
-Interpretación visual en la web	La probabilidad cambia drásticamente si la glucosa o BMI suben	El valor en dólares cambia mucho si el paciente fuma o envejece
+Si comparamos ambos modelos, encontramos algunas diferencias clave en cuanto a cómo las variables afectan las predicciones. El modelo de diabetes se basa principalmente en factores clínicos como glucosa y BMI, que tienen un impacto directo en la presencia de la enfermedad. En cambio, el modelo de seguro médico se enfoca en factores de riesgo de salud como el hábito de fumar, la edad y el BMI, que afectan el costo de la cobertura médica.
 
-El análisis con RandomForest demuestra que ambos modelos se comportan de forma coherente con la lógica médica:
-
-.- En diabetes, los valores clínicos (glucosa y BMI) son los principales determinantes del diagnóstico.
-
-.- En seguro médico, los factores de riesgo de salud (fumar, edad, sobrepeso) son los que más encarecen el costo.
-
-Esto evidencia que los modelos implementados en la aplicación web no solo predicen correctamente, sino que además reflejan fielmente la relación entre las variables y el riesgo médico que representan.
-
+En cuanto a la visualización en la interfaz web, el modelo de diabetes muestra un cambio notable en la probabilidad de diagnóstico cuando los valores de glucosa o BMI son altos. Por otro lado, en el modelo de seguro médico, el valor del costo cambia drásticamente cuando el usuario es fumador o cuando tiene una edad avanzada.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **4) ¿Qué técnica de optimización mejora el rendimiento de  ambos modelos?**
@@ -331,22 +306,33 @@ El modelo de diabetes se centra en datos clínicos para detectar una enfermedad,
 
 **6) Analizar el sesgo que presentan los modelos y explicar porqué.**
 
-R: 💗 Modelo de Predicción de Diabetes
+R: Análisis del Sesgo en los Modelos
 
-El modelo de diabetes presenta un sesgo de datos (data bias), originado principalmente por la naturaleza del dataset “PIMA Indians Diabetes Database”.
+En los modelos implementados para la predicción de diabetes y los costos del seguro médico, es esencial considerar el sesgo que podrían presentar durante el proceso de entrenamiento y evaluación. El sesgo se refiere a la tendencia de un modelo a hacer predicciones sistemáticamente incorrectas debido a su incapacidad para generalizar correctamente a partir de los datos de entrenamiento. Este sesgo puede estar relacionado tanto con los datos utilizados como con la elección del modelo o la configuración de los hiperparámetros.
 
-Causas del sesgo:
+Modelo 1 – Predicción de Diabetes (Regresión Logística)
 
-1.- Población limitada:
-Todos los registros corresponden a mujeres de origen Pima, por lo tanto el modelo puede no generalizar correctamente si se utiliza con hombres o personas de otras etnias.
-En la aplicación web, si se ingresan valores que no representan el perfil promedio de ese grupo, la predicción puede ser menos precisa.
+En el caso del modelo de predicción de diabetes, basado en regresión logística, podemos identificar ciertos factores que podrían inducir sesgo. Primero, los datos de entrenamiento podrían estar sesgados si no reflejan adecuadamente la diversidad de la población en términos de características como la edad, el género o la etnia. El conjunto de datos utilizado en este proyecto, conocido como PIMA Indians, proviene de una población específica (Indios Pima), lo que limita la generalización del modelo a otras poblaciones. Esta limitación puede generar un sesgo en las predicciones cuando el modelo se enfrenta a datos de personas que no pertenecen a este grupo, afectando su precisión al hacer predicciones en poblaciones distintas.
 
-2.- Variables clínicas incompletas:
-No se incluyen factores como alimentación, actividad física o antecedentes familiares más detallados, lo que puede llevar a falsos negativos o positivos al depender solo de los valores numéricos disponibles.
+Otro aspecto relevante es el umbral de clasificación utilizado en el modelo de regresión logística. El umbral de decisión se fijó en 0.4 para incrementar la sensibilidad del modelo y detectar más casos positivos (es decir, identificar más personas con riesgo de diabetes). Esto implica que el modelo tiene una mayor propensión a clasificar a más individuos como "positivos" (en riesgo de diabetes), lo que puede generar un sesgo hacia una tasa más alta de falsos positivos. Este sesgo es intencional, ya que se prioriza la detección temprana de la enfermedad sobre evitar diagnósticos erróneos, lo cual es común en el ámbito médico, donde es preferible tratar de más personas que potencialmente están en riesgo que pasar por alto a aquellas que realmente lo están.
 
-3.- Umbral de decisión fijo (0.4):
-Aunque optimizado, este umbral sigue siendo general y puede sobreestimar casos positivos cuando los valores están cerca del límite.
-Esto genera un sesgo hacia la sobrepredicción (detecta diabetes con mayor frecuencia para evitar falsos negativos).
+Modelo 2 – Predicción de Costos de Seguro Médico (Regresión Lineal)
+
+En el caso del modelo de predicción de costos de seguro médico, que emplea regresión lineal, el sesgo podría originarse en las características que se usan para predecir los costos. Por ejemplo, la variable "smoker" (fumar) tiene un peso mucho mayor en el modelo, lo que implica que el modelo podría estar sobrerrepresentando la influencia de este factor en el costo del seguro. En la vida real, el comportamiento de fumar es un factor relevante, pero no es el único factor determinante. Sin embargo, en el modelo, un cambio en la variable "smoker" puede tener un impacto mucho más significativo que en otras características como la edad o el BMI (Índice de Masa Corporal). Este sesgo hacia el factor "smoker" puede llevar a predicciones en las que se sobrevaloran los costos de los fumadores y se subestiman los costos de otros grupos de riesgo, como los que tienen un BMI alto.
+
+Además, el modelo de regresión lineal, por ser lineal, puede no ser el mejor para capturar las relaciones no lineales entre algunas variables y los costos del seguro. Por ejemplo, el impacto del BMI en el costo del seguro puede no ser lineal (un pequeño aumento en el BMI podría tener un impacto mayor en ciertos rangos que en otros), lo que sugiere que el modelo podría estar mostrando un sesgo de subajuste al no capturar completamente esta relación compleja.
+
+Análisis del Sesgo en Ambos Modelos
+
+En general, ambos modelos presentan sesgos inherentes debido a las siguientes razones:
+
+Datos sesgados: Ambos modelos fueron entrenados con conjuntos de datos específicos que podrían no representar toda la población. En el caso de la diabetes, el conjunto de datos proviene de una población particular, lo que limita su aplicabilidad a otros grupos. En el caso del seguro médico, el modelo puede estar sesgado si no refleja adecuadamente la diversidad de situaciones médicas que pueden influir en los costos.
+
+Umbral de decisión: El modelo de regresión logística para diabetes utiliza un umbral de 0.4, lo que aumenta la sensibilidad pero a costa de una tasa más alta de falsos positivos. Este sesgo puede ser deseado para asegurar que más personas en riesgo sean identificadas, pero también implica que el modelo puede clasificar erróneamente a muchas personas como diabéticas, especialmente cuando los datos de entrada no corresponden exactamente con los patrones de la población usada en el entrenamiento.
+
+Elección del modelo: El modelo de regresión lineal para los costos del seguro médico podría estar mostrando un sesgo por no capturar adecuadamente las relaciones no lineales entre variables, como el impacto del BMI. Aunque la regresión lineal es fácil de interpretar, su simplicidad puede ser una limitación cuando las relaciones entre las características son complejas.
+
+Impacto de las características: Ambos modelos tienen características que pueden estar sobrerrepresentadas o subrepresentadas. En el modelo de diabetes, la glucosa y el BMI tienen un peso crucial, lo cual es correcto desde el punto de vista clínico, pero también implica que el modelo podría no estar considerando otros factores relevantes, como la genética o los antecedentes familiares, que no están presentes en los datos. En el modelo de seguro, el factor "fumar" tiene un peso excesivo en comparación con otros factores.
 
 
 EJEMPLO:
