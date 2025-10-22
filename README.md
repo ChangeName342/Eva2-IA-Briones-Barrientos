@@ -122,12 +122,10 @@ Cuando un usuario ingresa sus datos en la interfaz web, si los valores de glucos
 
 EJEMPLO: 
 BMI BAJO
-<img width="812" height="829" alt="image" src="https://github.com/user-attachments/assets/b8b47ddd-ec50-49c2-88ef-94482772c0d4" />
+<img width="816" height="870" alt="image" src="https://github.com/user-attachments/assets/6f604e13-7f64-4c2d-bb21-612dcf83052e" />
 
 BMI ALTO
-<img width="829" height="821" alt="image" src="https://github.com/user-attachments/assets/06aef94a-8dda-486a-aaba-262d733f1c65" />
-
-
+<img width="840" height="880" alt="image" src="https://github.com/user-attachments/assets/a7f0d07c-912c-475d-ab5a-82769d68981b" />
 
 Modelo 2 – Predicción de Seguro Médico
 
@@ -137,11 +135,10 @@ El BMI (Índice de masa corporal) también es un factor importante, aunque su im
 
 EJEMPLO:
 NO FUMA
-<img width="804" height="698" alt="image" src="https://github.com/user-attachments/assets/02ea91d1-bc31-4b03-bf13-54f180fda657" />
+<img width="837" height="747" alt="image" src="https://github.com/user-attachments/assets/2278c0a8-1d0f-44bd-b27a-63d47e8551d4" />
 
 SI FUMA
-<img width="835" height="699" alt="image" src="https://github.com/user-attachments/assets/a1bd2e84-fb3c-4055-8fb5-86e7118a0559" />
-
+<img width="831" height="749" alt="image" src="https://github.com/user-attachments/assets/37f47896-e7e4-4084-97c6-09669c4ad62f" />
 
 Comparación general entre ambos modelos
 Si comparamos ambos modelos, encontramos algunas diferencias clave en cuanto a cómo las variables afectan las predicciones. El modelo de diabetes se basa principalmente en factores clínicos como glucosa y BMI, que tienen un impacto directo en la presencia de la enfermedad. En cambio, el modelo de seguro médico se enfoca en factores de riesgo de salud como el hábito de fumar, la edad y el BMI, que afectan el costo de la cobertura médica.
@@ -338,16 +335,13 @@ Impacto de las características: Ambos modelos tienen características que puede
 EJEMPLO:
 
 PERSONA SANA
-<img width="889" height="833" alt="image" src="https://github.com/user-attachments/assets/159e39c7-2aee-4634-840e-5a61e901962a" />
-
+<img width="818" height="871" alt="image" src="https://github.com/user-attachments/assets/49f99cea-bf83-4f0f-996e-49685cbb8047" />
 
 PERSONA CON VALORES INTERMEDIOS
-<img width="771" height="834" alt="image" src="https://github.com/user-attachments/assets/99e0a68b-cc8e-4d42-b3c3-ed1c156c4448" />
-
+<img width="826" height="876" alt="image" src="https://github.com/user-attachments/assets/085cee89-a68f-40d1-bec2-8e3d3e73df7f" />
 
 PERSONA CON VALORES ALTOS
-<img width="796" height="836" alt="image" src="https://github.com/user-attachments/assets/a93e71b8-9f98-45bf-9a37-22c5f84b0f81" />
-
+<img width="827" height="874" alt="image" src="https://github.com/user-attachments/assets/775c48f7-71ba-4f67-9f4f-74d7dbfaeaae" />
 
 
 Evidencia práctica: Al ingresar datos de pacientes jóvenes, saludables y con valores normales, el modelo predice correctamente “sin diabetes”. Sin embargo, si se introducen valores moderadamente altos (por ejemplo, glucosa 130 o BMI 29), el modelo puede clasificar como “positivo” aunque clínicamente aún no sea un diagnóstico confirmado. Esto demuestra que el modelo prefiere prevenir que omitir casos, lo cual es útil en contextos médicos, pero no exento de sesgo.
@@ -374,12 +368,11 @@ Al ser un modelo de regresión lineal (incluso con ElasticNet), supone relacione
 EJEMPLO:
 
 CASO 1: PERSONA JOVEN NO FUMADORA
-<img width="826" height="701" alt="image" src="https://github.com/user-attachments/assets/a81cfe3a-6526-4f1c-b417-2ef6dfb6f9de" />
-
+<img width="839" height="738" alt="image" src="https://github.com/user-attachments/assets/d7dac75a-0a96-43c9-a5ca-0d181954f779" />
 
 
 CASO 2: PERSONA JOVEN SI FUMADORA
-<img width="804" height="706" alt="image" src="https://github.com/user-attachments/assets/74fe2577-1895-48d3-9980-f5039ef020da" />
+<img width="829" height="736" alt="image" src="https://github.com/user-attachments/assets/8c2f62da-c370-4ae3-86d0-fa7baeaa4a6f" />
 
 
 Evidencia práctia: En la aplicación, se observa que marcar la opción “Fumador: Sí” provoca un aumento desproporcionado del precio, incluso en usuarios jóvenes y saludables. Esto muestra el sesgo aprendido por el modelo: el fumar domina la predicción y puede eclipsar otros factores relevantes (como la edad o el BMI). Aunque el comportamiento es coherente con la realidad médica, el modelo no distingue matices (por ejemplo, exfumadores o fumadores ocasionales).
