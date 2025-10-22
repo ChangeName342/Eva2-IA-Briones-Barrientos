@@ -65,7 +65,8 @@ En la web, el umbral ideal utilizado para clasificar los resultados del modelo d
 
 EJEMPLO: 
 
-<img width="804" height="846" alt="image" src="https://github.com/user-attachments/assets/da6a995c-2dc8-4faa-b285-3d9a5bc3eab4" />
+<img width="852" height="868" alt="image" src="https://github.com/user-attachments/assets/44daa3ca-5fcc-41eb-8ffb-5b17a307cc45" />
+
 
 Resultado esperado: “No presenta diabetes” o “Probabilidad baja de diabetes”.
 Interpretación: Todos los valores están dentro de rangos saludables. La probabilidad que el modelo calcula es inferior a 0.4, por lo tanto el modelo clasifica como negativo.
@@ -91,10 +92,11 @@ En la web, los factores que más influyen en el costo del seguro médico son el 
 
 EJEMPLO: 
 
-<img width="836" height="699" alt="image" src="https://github.com/user-attachments/assets/2ca440c0-9e2f-4615-acad-0c763cad7eec" />
+<img width="828" height="728" alt="image" src="https://github.com/user-attachments/assets/3438ff8a-f02f-45ca-8b6c-b80d7ff6cacf" />
 
 
-Predicción: $1324.42
+
+Predicción: $1576.92
 Interpretación: Este valor representa el costo estimado más bajo del seguro médico. El modelo identifica a este paciente como bajo riesgo, ya que:
 
 a) No fuma,
@@ -244,7 +246,8 @@ Aplicación: En la interfaz, estos mismos campos se piden al usuario para estima
 
 EJEMPLO:
 
-<img width="834" height="838" alt="image" src="https://github.com/user-attachments/assets/6ac6b124-6dcf-4c97-ba9b-91de169f0a50" />
+<img width="790" height="862" alt="image" src="https://github.com/user-attachments/assets/c6fb4e4f-5ddf-4a63-807b-d13ccdade0d7" />
+
 
 
 Resultado: Una predicción de riesgo Bajo. Esto demuestra que app utiliza datos clínicos reales y coherentes con los valores del dataset PIMA.
@@ -283,7 +286,8 @@ Aplicación: En la interfaz, el usuario puede ingresar valores como edad, BMI, r
 
 EJEMPLO: 
 
-<img width="845" height="704" alt="image" src="https://github.com/user-attachments/assets/44aa2095-f62d-4b02-ab23-0d3934d3f4ff" />
+<img width="804" height="740" alt="image" src="https://github.com/user-attachments/assets/38a782d9-8d30-40d5-a538-92d053452760" />
+
 
 
 Resultado: Al ingresar valores promedio del dataset de seguros médicos, la aplicación muestra un costo estimado medio. Esto evidencia que el modelo fue entrenado con datos realistas y generaliza correctamente al aplicarse en la interfaz web, manteniendo coherencia con el comportamiento del dataset original.
